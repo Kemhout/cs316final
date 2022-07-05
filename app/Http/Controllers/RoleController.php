@@ -32,6 +32,43 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
+        $list_grade = [
+            [
+                'letterGrade' => 'AA',
+                'numberGrade' => 4.0,
+            ],
+            [
+                'letterGrade' => 'BA',
+                'numberGrade' => 3.5,
+            ],
+            [
+                'letterGrade' => 'BB',
+                'numberGrade' => 3.0,
+            ],
+            [
+                'letterGrade' => 'CB',
+                'numberGrade' => 2.5,
+            ],
+            [
+                'letterGrade' => 'CC',
+                'numberGrade' => 2.0,
+            ],
+            [
+                'letterGrade' => 'DC',
+                'numberGrade' => 1.5,
+            ],
+            [
+                'letterGrade' => 'DD',
+                'numberGrade' => 1.0,
+            ],
+            [
+                'letterGrade' => 'F',
+                'numberGrade' => 0,
+            ],
+
+        ];
+        $list_type_of_course = DB::table('courses')->select('type_of_course')->distinct()->get();
+        dump($list_type_of_course);
         $userId = $request->user()->id;
         $userMajor = User::find($userId)->major;
         $userAC = User::find($userId)->ac;
@@ -41,7 +78,7 @@ class RoleController extends Controller
         $testing2 = DB::table('student_course')->join('courses', 'student_course.courses_id', '=', 'courses.id')->where('student_course.student_group_id', 13)->get();
         $studentCourse = $testing->merge($testing2);
         $roles = Role::orderBy('id','DESC')->paginate(5);
-        return view('roles.index',compact('roles', 'userMajorAc', 'studentCourse'))
+        return view('roles.index',compact('roles', 'userMajorAc', 'studentCourse', 'list_grade'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
     
