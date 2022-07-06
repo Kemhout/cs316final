@@ -7,5 +7,6 @@
     @else
         <p>Nothing</p>
     @endif
-        <a wire:click="boot('rad')">Set MY Tile</a>
+    <?php $arr = array(); ?>
+        <a wire:click="calculate('rad')">Set MY Tile</a>
 </div>

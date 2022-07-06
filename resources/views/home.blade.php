@@ -14,17 +14,17 @@
                     @can('role-list')
                         <?php $class_array = array("bg-primary","bg-danger","bg-success","bg-warning"); ?>
                         <div class="row">
-                            @for($i = 0; $i<3; $i++)
-                                <div class="card text-white {{ $class_array[$i] }} mb-3" style="max-width: 18rem;">
-                                    <div class="card-header">{{ $arrMajorCount[$i] }} Student: </div>
+                            @foreach($arrMajorCount as $key => $item)
+                                <div class="card text-white {{ $class_array[$key] }} mb-3" style="max-width: 18rem;">
+                                    <div class="card-header">{{ $item }} Student: </div>
                                     <div class="card-body">
-                                    <h5 class="card-title"><h2>{{ $arrMajorCountStudent[$i] }}<i class="fa-solid fa-people-simple"></i></h2></h5>
+                                    <h5 class="card-title"><h2>{{ $arrMajorCountStudent[$key] }}<i class="fa-solid fa-people-simple"></i></h2></h5>
                                     </div>
                                 </div>
-                                @if($i % 2 !== 1)
+                                @if($key % 2 !== 0)
                                 <div class="text-white bg-muted mb-3" style="max-width: 7rem;"></div>
                                 @endif
-                            @endfor
+                            @endforeach
                         </div>
                     @endcan
                     @cannot('role-list')

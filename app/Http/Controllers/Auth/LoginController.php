@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
+use App\Models\Course;
 
 
 class LoginController extends Controller
@@ -43,6 +45,11 @@ class LoginController extends Controller
 
     public function logout() {
         Session::flush();
+        $count = DB::table('courses')->count();
+        for($i=0; $i<$count; $i++) {
+            Course::where('id', $i)->update(['require' => 4]);
+            Course::where('id', $i)->update(['studyOrNot' => NULL]);
+        }
         Auth::logout();
         return redirect('login');
     }

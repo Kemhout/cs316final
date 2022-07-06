@@ -47,7 +47,6 @@
             <td>{{ $course->professor }}</td>
 	        <td>
                 <form action="{{ route('courses.destroy',$course->id) }}" method="POST">
-                    <a class="btn btn-info" href="{{ route('courses.show',$course->id) }}">Show</a>
                     <a class="btn btn-primary" href="{{ route('courses.edit',$course->id) }}">Edit</a>
 
                     @csrf

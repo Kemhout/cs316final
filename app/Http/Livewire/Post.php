@@ -12,10 +12,9 @@ class Post extends Component
         $this->title = $title;
     }
 
-    public function boot($title) {
-        $this->title = $title;
-    }
-
+    // public function boot() {
+    //     $this->title = DB::table('courses')->select('type_of_course')->distinct()->get();
+    // }
     public function render()
     {
         return view('livewire.post');

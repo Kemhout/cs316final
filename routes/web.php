@@ -22,6 +22,7 @@ use App\Http\Controllers\Auth\LoginController;
   
 Auth::routes();
   
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/logout',  [LoginController::class, 'logout']);
 
@@ -34,3 +35,5 @@ Route::group(['middleware' => ['role:Admin']], function () {
 Route::group(['middleware' => ['role:Student']], function () {
     Route::resource('roles', RoleController::class);
 });
+
+Route::get('/export',  [RoleController::class, 'export'])->name('export');;

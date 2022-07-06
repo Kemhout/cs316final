@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
+use App\Models\Course;
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
+use App\Exports\UserCourseExport;
+use Maatwebsite\Excel\Facades\Excel;
+
     
 class RoleController extends Controller
 {
@@ -68,7 +72,10 @@ class RoleController extends Controller
 
         ];
         $list_type_of_course = DB::table('courses')->select('type_of_course')->distinct()->get();
-        dump($list_type_of_course);
+        $list_type_of_course_count = array();
+        foreach($list_type_of_course as $key => $item) {
+            $list_type_of_course_count[$key] = DB::table('courses')->where('type_of_course', $item->type_of_course)->count();
+        };
         $userId = $request->user()->id;
         $userMajor = User::find($userId)->major;
         $userAC = User::find($userId)->ac;
@@ -78,7 +85,7 @@ class RoleController extends Controller
         $testing2 = DB::table('student_course')->join('courses', 'student_course.courses_id', '=', 'courses.id')->where('student_course.student_group_id', 13)->get();
         $studentCourse = $testing->merge($testing2);
         $roles = Role::orderBy('id','DESC')->paginate(5);
-        return view('roles.index',compact('roles', 'userMajorAc', 'studentCourse', 'list_grade'))
+        return view('roles.index',compact('roles', 'userMajorAc', 'studentCourse', 'list_grade', 'list_type_of_course', 'list_type_of_course_count'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
     
@@ -87,11 +94,11 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $permission = Permission::get();
-        return view('roles.create',compact('permission'));
-    }
+    // public function create()
+    // {
+    //     $permission = Permission::get();
+    //     return view('roles.create',compact('permission'));
+    // }
     
     /**
      * Store a newly created resource in storage.
@@ -101,14 +108,12 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|unique:roles,name',
-            'permission' => 'required',
+        request()->validate([
+            // 'id' => 'required',
+            'require' => 'required',
         ]);
     
-        $role = Role::create(['name' => $request->input('name')]);
-        
-        $role->syncPermissions($request->input('permission'));
+        Course::create($request->g);
     
         return redirect()->route('roles.index')
                         ->with('success','Role created successfully');
@@ -155,17 +160,10 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'permission' => 'required',
-        ]);
-    
-        $role = Role::find($id);
-        $role->name = $request->input('name');
-        $role->save();
-    
-        $role->syncPermissions($request->input('permission'));
-    
+        for($i=0; $i<count($request->require); $i++) {
+            Course::where('id', $request->kk[$i])->update(['require' => $request->require[$i]]);
+            Course::where('id', $request->kk[$i])->update(['studyOrNot' => 'Yes']);
+        }
         return redirect()->route('roles.index')
                         ->with('success','Role updated successfully');
     }
@@ -182,7 +180,9 @@ class RoleController extends Controller
                         ->with('success','Role deleted successfully');
     }
 
-    public function calcucate(Request $request) {
-        return redirect()->route('roles.index');
+    public function export() 
+    {
+        return Excel::download(new UserCourseExport(2), 'course.xlsx');
     }
 }
+

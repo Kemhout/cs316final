@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-
 @section('content')
 
 <div class="row">
@@ -16,13 +15,12 @@
     </div>
 </div>
 
-
+{!! Form::model($roles, ['method' => 'PATCH','route' => ['roles.update', 2]]) !!}
 @if ($message = Session::get('success'))
     <div class="alert alert-success">
         <p>{{ $message }}</p>
     </div>
 @endif
-
 <table class="table table-bordered">
   <tr>
      <th>No</th>
@@ -33,27 +31,36 @@
   </tr>
     {{-- <form action="{{ route('roles.calcucatekk') }}" method="POST"> --}}
     @csrf
-    @for($i=1; $i<3; $i++)
-        <?php $totalCredit=0; ?>
+    <?php $allCourseGrade=0; $countAllCourse=0; ?>
+    @for($i=1; $i<9; $i++)
+        <?php $totalCredit=0; $averageGrade = 0;?>
         <tr>
             <th class="p-3 mb-2 bg-primary text-white" >Semester {{ $i }}</th>
         </tr>
         <?php $n=0; ?>
-        @foreach ($studentCourse as $key => $course)
-            @if($course->semester === $i)
+        @foreach ($studentCourse as $key => $course) 
+            @if($course->semester == $i)
+            <?php ++$countAllCourse; ?>
                 <tr>
-                    <td>{{ ++$n }}</td>
+                    <?php $n++; ?>
+                    <td>{{ $n }}</td>
                     <td>{{ $course->name }}</td>
                     <td>{{ $course->type_of_course }}</td>
                     <td>{{ $course->credit }}</td>
+                    
+                    <div class="form-group" type="hidden">
+                        <input name="kk[]" type="hidden" value="{{$course->id}}">
+                    </div>
+                 
                     <td>
-                        <div class="form-group">
-                            <select name="major" class="form-control custom-select">
+                        <div class="form-group"> 
+                            <select name="require[]" id="require" class="form-control custom-select">
                                 @foreach($list_grade as $item)
-                                <option value="{{ $item['letterGrade'] }}" {{ ( $item['letterGrade'] == $course->name) ? 'selected' : '' }}> 
+                                <option value="{{ $item['numberGrade'] }}" {{ ( $item['numberGrade'] == $course->require) ? 'selected' : '' }}> 
                                     {{ $item['letterGrade'] }} 
                                 </option>
                                 @endforeach
+                                <?php $averageGrade += $course->require; $allCourseGrade+= $course->require;?>
                             </select>
                         </div>
                     </td>
@@ -66,14 +73,17 @@
             <td></td>
             <td>Total Credit: </td>
             <td>{{ $totalCredit }}</td>
-            <td></td>
+            <?php $averageGrade=number_format((float)$averageGrade/$n, 2, '.', '');?>
+            <td>{{ $averageGrade }}</td>
         </tr>
     @endfor
     </form>
 </table>
-<button type="button" class="btn btn-primary m-2" data-toggle="modal" data-target="#demoModal" wire:click="boot('rad')">Click Here</button>
-<a wire:click="boot('rad')">Set MY Tile</a>
-@livewire('post')
+<button type="button" class="btn btn-primary m-2" data-toggle="modal" data-target="#demoModal">Check Course</button>
+<button type="submit" class="btn btn-primary">Check Grade</button>
+<div>  
+    Cumulative GPA: {{ number_format((float)$allCourseGrade/$countAllCourse, 2, '.', ''); }}
+</div>
 {!! $roles->render() !!}
 	<!-- Modal Example Start-->
     <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="demoModalLabel" aria-hidden="true">
@@ -86,15 +96,18 @@
                         </button>
                 </div>
                 <div class="modal-body">
-                    @livewire('post')
-                    @livewireScripts
+                    @foreach($list_type_of_course as $key => $item) 
+                        <p>{{ $item->type_of_course }}: {{ $list_type_of_course_count[$key] }}</p>
+                        <p></p>
+                    @endforeach
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                    
                 </div>
             </div>
         </div>
     </div>
 <!-- Modal Example End-->
+{!! Form::close() !!}
 @endsection

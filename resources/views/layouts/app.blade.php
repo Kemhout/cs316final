@@ -31,11 +31,11 @@
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 @guest
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{  route('home') }}">
                     ABC School System
                 </a>
                 @else
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="{{ route('home') }}">
                         {{ Auth::user()->name }}
                     </a>
                 @endguest
@@ -52,13 +52,15 @@
                         <!-- Authentication Links -->
                         @guest
                             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
-                            <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
+                            {{-- <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li> --}}
                         @else
+                
                         @can('role-list')
                             <li><a class="nav-link" href="{{ route('users.index') }}">Manage Users</a></li>
                             <li><a class="nav-link" href="{{ route('courses.index') }}">Course</a></li>
                         @endcan
                         @cannot('role-list')
+                            <li><a class="nav-link" href="{{ route('export') }}">Export</a></li>
                             <li><a class="nav-link" href="{{ route('roles.index') }}">Check Course Audit</a></li>
                         @endcannot
                             <div class="dropdown">

@@ -32,12 +32,13 @@ class HomeController extends Controller
         //dump($userInfo);
         $major = DB::table('users')->distinct()->get(['major']);
         $majorCount = User::pluck('major')->count()-1;
-        $cs_student = DB::table('users')->where('major', 'CS')->count();
-        foreach($major as $item) {
+        $arrMajorCount = array();
+        $arrMajorCountStudent = array();
+        foreach($major as $key=> $item) {
             if($item->major != NULL) {
                 $studentInMajor = DB::table('users')->where('major', $item->major)->count();
-                $arrMajorCount[] = $item->major;
-                $arrMajorCountStudent[] = $studentInMajor;
+                $arrMajorCount[$key] = $item->major;
+                $arrMajorCountStudent[$key] = $studentInMajor;
             }
         }
         return view('home', compact('arrMajorCount', 'arrMajorCountStudent', 'user'));
