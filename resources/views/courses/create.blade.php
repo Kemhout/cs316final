@@ -38,13 +38,7 @@
 		    <div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group">
 		            <strong>Code Name</strong>
-		            <textarea class="form-control" style="height:150px" name="code_name" placeholder="Code Name"></textarea>
-		        </div>
-		    </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-		        <div class="form-group">
-		            <strong>Professor's Name</strong>
-		            <textarea class="form-control" name="professor" placeholder="Professor"></textarea>
+		            <textarea class="form-control" style="height:50px" name="code_name" placeholder="Code Name"></textarea>
 		        </div>
 		    </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
@@ -57,15 +51,8 @@
                         </select>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Department:</strong>
-                        <select name="department" class="form-control custom-select">
-                        @foreach($chooseMajor as $item)
-                            <option value="{{ $item }}" selected >{{ $item }}</option>
-                        @endforeach
-                        </select>
-                </div>
+            <div class="form-group">
+                <input name="require" type="hidden" value={{4}}>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
@@ -75,16 +62,6 @@
                             <option value="{{ $item }}" selected >{{ $item }}</option>
                         @endforeach
                         </select>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">         
-                    <label><strong>Select Category :</strong></label><br/>
-                    <select class="selectpicker" multiple data-live-search="true" name="cat[]">
-                        @foreach($chooseMajor as $item)
-                            <option value="{{ $item }}" selected >{{ $item }}</option>
-                        @endforeach
-                    </select>    
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">

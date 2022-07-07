@@ -21,6 +21,13 @@
         <p>{{ $message }}</p>
     </div>
 @endif
+@if ($fail_course !== NULL)
+    @foreach($fail_course as $item)
+        <div class="alert alert-danger">
+            <p>{{ $item->name }}: is Failed.</p>
+        </div>
+    @endforeach
+@endif
 <table class="table table-bordered">
   <tr>
      <th>No</th>
@@ -54,13 +61,13 @@
                  
                     <td>
                         <div class="form-group"> 
-                            <select name="require[]" id="require" class="form-control custom-select">
+                            <select name="grade[]" id="grade" class="form-control custom-select">
                                 @foreach($list_grade as $item)
-                                <option value="{{ $item['numberGrade'] }}" {{ ( $item['numberGrade'] == $course->require) ? 'selected' : '' }}> 
+                                <option value="{{ $item['numberGrade'] }}" {{ ( $item['numberGrade'] == $course->grade) ? 'selected' : '' }}> 
                                     {{ $item['letterGrade'] }} 
                                 </option>
                                 @endforeach
-                                <?php $averageGrade += $course->require; $allCourseGrade+= $course->require;?>
+                                <?php $averageGrade += $course->grade; $allCourseGrade+= $course->grade;?>
                             </select>
                         </div>
                     </td>
@@ -71,7 +78,7 @@
         <tr>
             <td></td>
             <td></td>
-            <td>Total Credit: </td>
+            <td>Credit: </td>
             <td>{{ $totalCredit }}</td>
             <?php $averageGrade=number_format((float)$averageGrade/$n, 2, '.', '');?>
             <td>{{ $averageGrade }}</td>
@@ -79,11 +86,12 @@
     @endfor
     </form>
 </table>
-<button type="button" class="btn btn-primary m-2" data-toggle="modal" data-target="#demoModal">Check Course</button>
-<button type="submit" class="btn btn-primary">Check Grade</button>
 <div>  
     Cumulative GPA: {{ number_format((float)$allCourseGrade/$countAllCourse, 2, '.', ''); }}
 </div>
+<button type="button" class="btn btn-primary m-2" data-toggle="modal" data-target="#demoModal">Check Course</button>
+<button type="submit" class="btn btn-primary">Check Grade</button>
+
 {!! $roles->render() !!}
 	<!-- Modal Example Start-->
     <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="demoModalLabel" aria-hidden="true">

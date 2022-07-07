@@ -12,15 +12,7 @@ class CourseController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */
-    function __construct()
-    {
-        //  $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
-        //  $this->middleware('permission:product-create', ['only' => ['create','store']]);
-        //  $this->middleware('permission:product-edit', ['only' => ['edit','update']]);
-        //  $this->middleware('permission:product-delete', ['only' => ['destroy']]);
-    }
-    /**
+
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -40,9 +32,8 @@ class CourseController extends Controller
     public function create()
     {
         $credit = array(3, 4);
-        $chooseMajor = DB::table('student_group')->name;
         $typeOfCourse = array("F-KHStudies", "F-MathSciTech", "F-SocSci", "F-Eng", "F-Core", "GE");
-        return view('courses.create', compact('typeOfCourse', 'credit', 'chooseMajor'));
+        return view('courses.create', compact('typeOfCourse', 'credit',));
     }
     
     /**
@@ -56,16 +47,12 @@ class CourseController extends Controller
         request()->validate([
             'name' => 'required',
             'code_name' => 'required',
-            'professor' => 'required',
             'type_of_course' => 'required', 
             'credit' => 'required',
-            'department' => 'required',
         ]);
     
         Course::create($request->all());
-        // $input = $request->all();
-        // $input['cat'] = json_encode($input['cat']);
-        // dump($input);
+
         return redirect()->route('courses.index')
                         ->with('success','Course created successfully.');
     }
@@ -93,9 +80,8 @@ class CourseController extends Controller
         $selectedID = Course::find($id)->type_of_course;
         $selectedCredit =  Course::find($id)->credit;
         $chooseTypeOfCourse = array("F-KHStudies", "F-MathSciTech", "F-SocSci", "F-Eng", "F-Core", "GE");
-        $chooseMajor = array("CS", "MIS", "BUS");
         $courses = Course::find($id);
-        return view('courses.edit',compact('courses', 'chooseTypeOfCourse', 'selectedID', 'selectedCredit', 'chooseMajor','credit'));
+        return view('courses.edit',compact('courses', 'chooseTypeOfCourse', 'selectedID', 'selectedCredit','credit'));
     }
     
     /**
@@ -110,13 +96,12 @@ class CourseController extends Controller
          request()->validate([
             'name' => 'required',
             'code_name' => 'required',
-            'professor' => 'required',
             'credit' => 'required',
-            'department' => 'required',
+            'type_of_course' => 'required',
         ]);
-    
         //$courses->update($request->all());
         $input = $request->all();
+    
         $courses = Course::find($id);
         $courses->update($input);
     

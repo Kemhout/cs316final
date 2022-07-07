@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
-//use App\Http\Controllers\Auth;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -28,8 +27,10 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+      // $userrole = Auth::user()->getRoleName();
+        //dump($userrole);
         $user = $request->user();
-        //dump($userInfo);
+        dump($user->getRoleNames()[0]);
         $major = DB::table('users')->distinct()->get(['major']);
         $majorCount = User::pluck('major')->count()-1;
         $arrMajorCount = array();

@@ -55,14 +55,14 @@
                             {{-- <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li> --}}
                         @else
                 
-                        @can('role-list')
-                            <li><a class="nav-link" href="{{ route('users.index') }}">Manage Users</a></li>
+                        @if(Auth::user()->getRoleNames()[0] == 'Admin' )
+                        <li><a class="nav-link" href="{{ route('majors.index') }}">Academic</a></li>
+                            <li><a class="nav-link" href="{{ route('users.index') }}">Manage Student</a></li>
                             <li><a class="nav-link" href="{{ route('courses.index') }}">Course</a></li>
-                        @endcan
-                        @cannot('role-list')
+                        @else
                             <li><a class="nav-link" href="{{ route('export') }}">Export</a></li>
                             <li><a class="nav-link" href="{{ route('roles.index') }}">Check Course Audit</a></li>
-                        @endcannot
+                        @endif
                             <div class="dropdown">
                                 <div class="col-sm-3">
                                     <a class="nav-link" href="{{ route('logout') }} ">Logout</a>

@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Users Management</h2>
+            <h2>Student Management</h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-success" href="{{ route('users.create') }}"> Create New User</a>
@@ -24,11 +24,12 @@
 <table class="table table-bordered">
  <tr>
    <th>No</th>
-   <th>Name</th>
+   <th>Last Name</th>
+   <th>First Name</th>
    <th>Email</th>
    <th>Major</th>
    <th>Academic Year</th>
-   <th>Roles</th>
+   <th>Year Level</th>
    <th width="280px">Action</th>
  </tr>
  @foreach ($data as $key => $user)
@@ -36,10 +37,12 @@
     @if($userRole=="Student")
       <tr>
         <td>{{ ++$i }}</td>
-        <td>{{ $user->name }}</td>
+        <td>{{ $user->last_name }}</td>
+        <td>{{ $user->first_name }}</td>
         <td>{{ $user->email }}</td>
         <td>{{ $user->major }}</td>
-        <td>{{ $user->ac }}</td>
+        <td>{{ $user->academic_year }}</td>
+        <td>{{ $user->year_level }}</td>
         <td>
           {{$userRole}}
         </td>
@@ -56,6 +59,6 @@
 </table>
 
 
-{!! $data->render() !!}
+{!! $data->links('pagination::bootstrap-4') !!}
 
 @endsection

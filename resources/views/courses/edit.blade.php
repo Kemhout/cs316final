@@ -54,18 +54,6 @@
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
-            <strong>Departmnet:</strong>
-                <select name="department" class="form-control custom-select">
-                    @foreach ($chooseMajor as $key => $value)
-                        <option value="{{ $value }}" {{ ( $value == $selectedID) ? 'selected' : '' }}> 
-                            {{ $value }} 
-                        </option>
-                    @endforeach  
-                </select>
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
             <strong>Credit: </strong>
                 <select name="credit" class="form-control custom-select">
                     @foreach ($credit as $key => $value)
@@ -74,12 +62,6 @@
                         </option>
                     @endforeach  
                 </select>
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Professor's Name</strong>
-            {!! Form::text('professor', null, array('placeholder' => 'Professor Name','class' => 'form-control')) !!}
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">

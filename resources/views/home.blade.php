@@ -11,7 +11,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    @can('role-list')
+                    @if($user->getRoleNames()[0] == "Admin")
                         <?php $class_array = array("bg-primary","bg-danger","bg-success","bg-warning"); ?>
                         <div class="row">
                             @foreach($arrMajorCount as $key => $item)
@@ -26,8 +26,7 @@
                                 @endif
                             @endforeach
                         </div>
-                    @endcan
-                    @cannot('role-list')
+                    @else
                         <div class="row">
                             <div class="col-lg-12 margin-tb">
                                 <div class="pull-left">
@@ -61,8 +60,7 @@
                                 </div>
                             </div>
                         </div>                  
-                    @endcannot
- 
+                    @endif
                 </div>
             </div>
         </div>

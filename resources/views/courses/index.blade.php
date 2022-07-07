@@ -27,9 +27,7 @@
             <th>Name</th>
             <th>Code Name</th>
             <th>Type Of Course</th>
-            <th>Department</th>
             <th>Credit</th>
-            <th>Professor</th>
             <th width="280px">Action</th>
         </tr>
 	    @foreach ($courses as $course)
@@ -38,13 +36,7 @@
 	        <td>{{ $course->name }}</td>
 	        <td>{{ $course->code_name }}</td>
             <td>{{ $course->type_of_course }}</td>
-            @if($course->department != NULL)
-            <td>{{ $course->department }}</td>
-            @else 
-            <td>All</td>
-            @endif
             <td>{{ $course->credit }}</td>
-            <td>{{ $course->professor }}</td>
 	        <td>
                 <form action="{{ route('courses.destroy',$course->id) }}" method="POST">
                     <a class="btn btn-primary" href="{{ route('courses.edit',$course->id) }}">Edit</a>

@@ -15,7 +15,10 @@ class StudentGroupCourse extends Model
      * @var array
      */
     protected $fillable = [
-        'student_group_id', 'courses_id'
+        'student_group_id', 
+        'courses_id',
+        'semester', 
+        'department',
     ];
  
     /**

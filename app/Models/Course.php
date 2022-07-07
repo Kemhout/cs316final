@@ -15,7 +15,7 @@ class Course extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'code_name', 'professor', 'type_of_course', 'credit', 'department', 'require', 'semester', 'grade', 'studyOrNot'
+        'name', 'code_name', 'type_of_course', 'credit', 'grade', 'studyOrNot'
     ];
 
     public function student_group()

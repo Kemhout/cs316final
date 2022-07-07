@@ -31,8 +31,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        $chooseMajor = array("CS", "MIS", "BUS");
-        $academic_year = array("Freshman", "Sophomore", "Junior", "Senior");
+        $chooseMajor = DB::table('majors')->pluck('short_name');
+        $academic_year = DB::table('academic_years')->pluck('year');
         $roles = Role::pluck('name','name')->all();
         return view('users.create',compact('roles', 'academic_year', 'chooseMajor'));
     }

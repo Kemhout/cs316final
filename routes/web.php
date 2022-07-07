@@ -7,7 +7,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\MajorController;
+use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\AssignCourse;
   
 /*
 |--------------------------------------------------------------------------
@@ -30,10 +34,17 @@ Route::group(['middleware' => ['role:Admin']], function () {
     //Route::resource('roles', RoleController::class);
     Route::resource('courses', CourseController::class);
     Route::resource('users', UserController::class);
+    Route::resource('assignCourse', AssignCourse::class);
+    Route::resource('academic_years', AcademicYearController::class);
+    Route::resource('majors', MajorController::class);
+    Route::resource('semesters', SemesterController::class);
+    //Route::get('/users',  [UserController::class, 'index'])->name('users.index');
 });
 
 Route::group(['middleware' => ['role:Student']], function () {
     Route::resource('roles', RoleController::class);
+    Route::get('/export',  [RoleController::class, 'export'])->name('export');
 });
 
-Route::get('/export',  [RoleController::class, 'export'])->name('export');;
+
+//Route::get('/',  [RoleController::class, 'index'])->name('export');;
