@@ -22,6 +22,8 @@ class LiveGrade extends Component
     }
     public function render()
     {
-        return view('livewire.live-grade');
+        return view('livewire.live-grade', [
+            'listings' => Course::whereLike('model',)
+        ]);
     }
 }
