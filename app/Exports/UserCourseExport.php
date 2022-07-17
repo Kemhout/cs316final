@@ -13,7 +13,7 @@ class UserCourseExport implements FromCollection, WithHeadingRow
     */
     public function collection()
     {      
-        $course = Course::select('name','code_name','type_of_course','credit', 'require')->where('studyOrNot', 'Yes')->get();
+        $course = Course::select('name','code_name','type_of_course','credit','grade')->where('studyOrNot', 'Yes')->get();
         return $course;
     }
 

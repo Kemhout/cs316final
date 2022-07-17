@@ -57,28 +57,57 @@ class RoleController extends Controller
                 'letterGrade' => 'F',
                 'numberGrade' => 0,
             ],
-
+            [
+                'letterGrade' => 'NP',
+                'numberGrade' => 0,
+            ],
         ];
-        $list_type_of_course = DB::table('courses')->select('type_of_course')->distinct()->get();
-        $list_type_of_course_count = array();
-        foreach($list_type_of_course as $key => $item) {
-            $list_type_of_course_count[$key] = DB::table('courses')->where('type_of_course', $item->type_of_course)->count();
-        };
+
+        
 
         // foreach($list_type_of_course as $key => $item) {
         //     $list_type_of_course_count[$key] = DB::table('courses')->where('type_of_course', $item->type_of_course)->count();
         // };
+        $semester = DB::table('semesters')->pluck('id')->last();
         $fail_course = DB::table('courses')->where('grade', 0)->get();
+        //Searching Student Attribute
         $userId = $request->user()->id;
         $userMajor = User::find($userId)->major;
-        $userAC = User::find($userId)->ac;
-        $userMajorAc = $userMajor . ' ' . $userAC;
-        $courseID = DB::table('student_group')->where('name', $userMajorAc)->get()[0]->id;
-        $testing = DB::table('student_course')->join('courses', 'student_course.courses_id', '=', 'courses.id')->where('student_course.student_group_id', $courseID)->get();
-        $testing2 = DB::table('student_course')->join('courses', 'student_course.courses_id', '=', 'courses.id')->where('student_course.student_group_id', 13)->get();
-        $studentCourse = $testing->merge($testing2);
+        $userAC = User::find($userId)->academic_year;
+        $userMajorID1 = DB::table('majors')->where('short_name', $userMajor)->first()->id;
+        //$userMajorID2 = DB::table('majors')->where('short_name', 'All')->first()->id;
+
+        //Merge Student Course
+        $studentCourse = DB::table('study_plans')->join('courses', 'study_plans.courses_id', '=', 'courses.id')->where('study_plans.majors_id', $userMajorID1)->where('study_plans.academic_year', $userAC)->get()->unique('courses_id');
+        //$testing2 = DB::table('study_plans')->join('courses', 'study_plans.courses_id', '=', 'courses.id')->where('study_plans.majors_id', $userMajorID2)->where('study_plans.academic_year', $userAC);
+        //$studentCourse = $testing->get()->merge($testing2->get());
+    
+        //Count type of course
+        $list_type_of_course = array_unique($studentCourse->pluck('type_of_course')->toArray());
+        $list_type_of_course_count = array();
+        foreach($list_type_of_course as $key => $item) {
+            $list_type_of_course_count[$key] = $studentCourse->where('type_of_course', $item)->count();
+        };
+        
+        //Limit Input Grade
+        $userYearLevel = User::find($userId)->year_level;
+        switch ($userYearLevel) {
+            case 'Freshman':
+                $inputGrade = 2;
+                break;
+            case 'Sophomore':
+                $inputGrade = 4;
+                break;
+            case 'Junior':
+                $inputGrade = 6;
+                break;
+            case 'Senior':
+                $inputGrade = 8;
+                break;
+        }
         $roles = Role::orderBy('id','DESC')->paginate(5);
-        return view('roles.index',compact('roles', 'userMajorAc', 'studentCourse', 'list_grade', 'list_type_of_course', 'list_type_of_course_count', 'fail_course'))
+
+        return view('roles.index',compact('roles', 'studentCourse', 'list_grade', 'list_type_of_course', 'list_type_of_course_count', 'fail_course', 'semester','inputGrade' ))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
     
@@ -104,10 +133,11 @@ class RoleController extends Controller
         request()->validate([
             // 'id' => 'required',
             'grade' => 'required',
+            //'studyOrNot' => 'required'
         ]);
     
-        Course::create($request->g);
-    
+        Course::create($request->grade);
+        dump('10');
         return redirect()->route('roles.index')
                         ->with('success','Role created successfully');
     }
@@ -154,8 +184,9 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
         for($i=0; $i<count($request->grade); $i++) {
-            Course::where('id', $request->course_id[$i])->update(['grade' => $request->grade[$i]]);
-            Course::where('id', $request->course_idp[$i])->update(['studyOrNot' => 'Yes']);
+            Course::where('id', $request->course_id[$i])->update(['grade' => $request->grade[$i],
+                                                'studyOrNot' => 'Yes']);
+            //Course::where('id', $request->course_idp[$i])->update([]);
         }
         
         return redirect()->route('roles.index')

@@ -45,6 +45,67 @@
     </table>
 </div>
 
-{!! $major->render() !!}
+<?php $m = 0; ?>
 
+{{-- Academic Year --}}
+
+<div style="max-width: 40rem;">
+    <div class="pull-right">
+        <a class="btn btn-success" href="{{ route('academic_years.create') }}">Create New Academic Year</a> 
+    </div>
+    <p>
+        {!! Form::open(['method' => 'DELETE','route' => ['academic_years.destroy', 2],'style'=>'display:inline']) !!}
+        {!! Form::submit('Delete Academic Year', ['class' => 'btn btn-danger']) !!}
+    </p>
+
+    <table class="table table-bordered">
+    <tr>
+        <th>No</th>
+        <th>Year</th>
+    </tr>
+        @foreach ($ac as $key => $acItem)
+        <?php ++$m; ?>
+        <tr>
+            <td>{{ $m }}</td>
+            <div class="form-group" type="hidden">
+                <input name="id" type="hidden" value="{{$m}}">
+            </div>
+            <td>{{ $acItem->year }}</td>
+            {!! Form::close() !!}
+        </tr>
+        @endforeach
+    </table>
+</div>
+<?php $m=0; ?>
+{{-- Semester --}}
+<div style="max-width: 40rem;">
+    <div class="pull-right">
+        <a class="btn btn-success" href="{{ route('semesters.create') }}">Create New Semester</a> 
+    </div>
+    <p>
+        {!! Form::open(['method' => 'DELETE','route' => ['semesters.destroy', 2],'style'=>'display:inline']) !!}
+        {!! Form::submit('Delete Semester', ['class' => 'btn btn-danger']) !!}
+    </p>
+
+    <table class="table table-bordered">
+    <tr>
+        <th>Semester</th>
+    </tr>
+        @foreach ($semesters as $key => $semesterItem)
+        <?php $m++; ?>
+        <tr>
+            <td>{{ $semesterItem->id }}</td>
+            <div class="form-group" type="hidden">
+                <input name="id" type="hidden" value="{{$m}}">
+            </div>
+            {!! Form::close() !!}
+        </tr>
+        @endforeach
+    </table>
+</div>
+
+<?php $m = 0; ?>
+
+{!! $major->links('pagination::bootstrap-4') !!}
+{!! $semesters->links('pagination::bootstrap-4') !!}
 @endsection

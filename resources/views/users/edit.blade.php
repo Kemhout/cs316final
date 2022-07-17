@@ -30,8 +30,14 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
-            <strong>Name:</strong>
-            {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+            <strong>First Name:</strong>
+            {!! Form::text('first_name', null, array('placeholder' => 'First Name','class' => 'form-control')) !!}
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>Last Name:</strong>
+            {!! Form::text('last_name', null, array('placeholder' => 'Last Name','class' => 'form-control')) !!}
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
@@ -55,8 +61,20 @@
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Academic Year:</strong>
-                <select name="ac" class="form-control custom-select">
+                <select name="academic_year" class="form-control custom-select">
                     @foreach ($academic_year as $key => $value)
+                        <option value="{{ $value }}" {{ ( $value == $selectedIDAC) ? 'selected' : '' }}> 
+                            {{ $value }} 
+                        </option>
+                    @endforeach  
+                </select>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>Year Level:</strong>
+                <select name="year_level" class="form-control custom-select">
+                    @foreach ($year_level as $key => $value)
                         <option value="{{ $value }}" {{ ( $value == $selectedIDAC) ? 'selected' : '' }}> 
                             {{ $value }} 
                         </option>

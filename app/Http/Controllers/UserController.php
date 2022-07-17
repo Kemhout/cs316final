@@ -33,8 +33,9 @@ class UserController extends Controller
     {
         $chooseMajor = DB::table('majors')->pluck('short_name');
         $academic_year = DB::table('academic_years')->pluck('year');
+        $year_level = ['Freshman', 'Sophomore', 'Junior', 'Senior'];
         $roles = Role::pluck('name','name')->all();
-        return view('users.create',compact('roles', 'academic_year', 'chooseMajor'));
+        return view('users.create',compact('roles', 'academic_year', 'chooseMajor', 'year_level'));
     }
     
     /**
@@ -46,10 +47,11 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'email' => 'required|email|unique:users,email',
             'major' => 'required',
-            'ac' => 'required',
+            'academic_year' => 'required',
             'password' => 'required|same:confirm-password',
             'roles' => 'required'
         ]);
@@ -85,15 +87,16 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $chooseMajor = array("CS", "MIS", "BUS");
-        $academic_year = array("Freshman", "Sophomore", "Junior", "Senior");
+        $chooseMajor = DB::table('majors')->pluck('short_name');
+        $academic_year = DB::table('academic_years')->pluck('year');
+        $year_level = array("Freshman", "Sophomore", "Junior", "Senior");
         $selectedID = User::find($id)->major;
         $selectedIDAC = User::find($id)->ac;
         $user = User::find($id);
         $roles = Role::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->all();
     
-        return view('users.edit',compact('user','roles','userRole', 'academic_year','chooseMajor', 'selectedID', 'selectedIDAC'));
+        return view('users.edit',compact('user','roles','userRole', 'academic_year','chooseMajor', 'selectedID', 'selectedIDAC', 'year_level', 'academic_year'));
     }
     
     /**
@@ -106,10 +109,11 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
             'major' => 'required',
-            'password' => 'same:confirm-password',
+            'academic_year' => 'required',
             'roles' => 'required'
         ]);
 

@@ -5,27 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StudentGroup extends Model
+class StudyPlan extends Model
 {
     use HasFactory;
-    protected $table = 'student_group';
+    protected $table = 'study_plans';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
+        'courses_id',
+        'studys_plan_group',
+        'majors_id',
+        'semester', 
+        'department',
+        'academic_year',
+        'year_level',
         'name',
+        'group_name',
     ];
- 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
- 
-    /**
-     * The roles that belong to the user.
-     */
 
 }

@@ -7,15 +7,10 @@
         <div class="pull-left">
             <h2>Check Course Audit</h2>
         </div>
-        <div class="pull-right">
-        @can('role-create')
-            <a class="btn btn-success" href="{{ route('roles.create') }}"> Create New Role</a>
-            @endcan
-        </div>
     </div>
 </div>
 
-{!! Form::model($roles, ['method' => 'PATCH','route' => ['roles.update', 2]]) !!}
+{!! Form::model($roles, ['method' => 'PATCH','route' => ['roles.update', 1]]) !!}
 @if ($message = Session::get('success'))
     <div class="alert alert-success">
         <p>{{ $message }}</p>
@@ -39,15 +34,15 @@
     {{-- <form action="{{ route('roles.calcucatekk') }}" method="POST"> --}}
     @csrf
     <?php $allCourseGrade=0; $countAllCourse=0; ?>
-    @for($i=1; $i<9; $i++)
+    @for($i=1; $i<=$semester; $i++)
         <?php $totalCredit=0; $averageGrade = 0;?>
         <tr>
             <th class="p-3 mb-2 bg-primary text-white" >Semester {{ $i }}</th>
         </tr>
-        <?php $n=0; ?>
+        <?php $n=0; $p=0;?>
         @foreach ($studentCourse as $key => $course) 
             @if($course->semester == $i)
-            <?php ++$countAllCourse; ?>
+            
                 <tr>
                     <?php $n++; ?>
                     <td>{{ $n }}</td>
@@ -56,23 +51,32 @@
                     <td>{{ $course->credit }}</td>
                     
                     <div class="form-group" type="hidden">
-                        <input name="kk[]" type="hidden" value="{{$course->id}}">
+                        <input name="course_id[]" type="hidden" value="{{$course->id}}">
                     </div>
                  
                     <td>
-                        <div class="form-group"> 
-                            <select name="grade[]" id="grade" class="form-control custom-select">
-                                @foreach($list_grade as $item)
-                                <option value="{{ $item['numberGrade'] }}" {{ ( $item['numberGrade'] == $course->grade) ? 'selected' : '' }}> 
-                                    {{ $item['letterGrade'] }} 
-                                </option>
-                                @endforeach
-                                <?php $averageGrade += $course->grade; $allCourseGrade+= $course->grade;?>
-                            </select>
+                        @if($i <= $inputGrade)
+                            <div class="form-group"> 
+                                <select name="grade[]" id="grade" class="form-control custom-select">
+                                    @foreach($list_grade as $item)
+                                    <option value="{{ $item['numberGrade'] }}" {{ ( $item['numberGrade'] == $course->grade) ? 'selected' : '' }}> 
+                                        {{ $item['letterGrade'] }} 
+                                    </option>
+                                    @endforeach
+                                    <?php $totalCredit+=$course->credit; ?>
+                                    <?php ++$countAllCourse; ?>
+                                    <?php $averageGrade += $course->grade; $allCourseGrade+= $course->grade;?>
+                                    <?php $p++; ?>
+                                </select>
+                            </div>
+                        @else
+                        <div class="form-group" type="hidden">
+                            <input name="studyOrNot[]" type="hidden" value='Yes'>
                         </div>
+                        @endif
+                        
                     </td>
                 </tr>
-                <?php $totalCredit+=$course->credit; ?>
             @endif
         @endforeach
         <tr>
@@ -80,17 +84,28 @@
             <td></td>
             <td>Credit: </td>
             <td>{{ $totalCredit }}</td>
-            <?php $averageGrade=number_format((float)$averageGrade/$n, 2, '.', '');?>
+            <?php if($p!=0) {
+                $averageGrade=number_format((float)$averageGrade/$p, 2, '.', '');
+            }
+                ?>
             <td>{{ $averageGrade }}</td>
         </tr>
     @endfor
-    </form>
+   
 </table>
 <div>  
-    Cumulative GPA: {{ number_format((float)$allCourseGrade/$countAllCourse, 2, '.', ''); }}
+    <?php if($countAllCourse != 0) {
+        $answer = number_format((float)$allCourseGrade/$countAllCourse, 2, '.', ''); 
+        }
+        else {
+            $answer = 0;
+        }   
+    ?>
+    Cumulative GPA: {{ $answer }}
 </div>
 <button type="button" class="btn btn-primary m-2" data-toggle="modal" data-target="#demoModal">Check Course</button>
 <button type="submit" class="btn btn-primary">Check Grade</button>
+</form>
 
 {!! $roles->render() !!}
 	<!-- Modal Example Start-->
@@ -105,7 +120,7 @@
                 </div>
                 <div class="modal-body">
                     @foreach($list_type_of_course as $key => $item) 
-                        <p>{{ $item->type_of_course }}: {{ $list_type_of_course_count[$key] }}</p>
+                        <p>{{ $item }}: {{ $list_type_of_course_count[$key] }}</p>
                         <p></p>
                     @endforeach
                 </div>

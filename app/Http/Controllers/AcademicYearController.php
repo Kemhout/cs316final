@@ -3,84 +3,47 @@
 namespace App\Http\Controllers;
 
 use App\Models\AcademicYear;
-use App\Http\Requests\StoreAcademicYearRequest;
-use App\Http\Requests\UpdateAcademicYearRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class AcademicYearController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $ac = AcademicYear::orderBy('id','DESC')->paginate(10);
+        return view('academic.index',compact('ac'))
+            ->with('i', ($request->input('page', 1) - 1) * 5);
+    }
+    
+    public function create(Request $request)
+    {
+        $input = $request->all();
+        if(AcademicYear::max('year') > 0) {
+            $input['year'] = AcademicYear::max('year')+1; 
+        } else {
+            $input['year'] = 2018;
+        }
+        AcademicYear::create($input);
+       return redirect()->route('majors.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        request()->validate([
+            'year' => 'required',
+        ]);
+        
+        AcademicYear::create($request->all());
+        return redirect()->route('academic_years.index')->with('success','Semester created successfully.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreAcademicYearRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreAcademicYearRequest $request)
+    public function destroy()
     {
-        //
+        $maxYear = AcademicYear::max('year');
+        $findId = DB::table('academic_years')->where('year', $maxYear)->pluck('id')[0];
+        AcademicYear::find($findId)->delete();
+        return redirect()->route('majors.index')
+                        ->with('success','Academic Year deleted successfully');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\AcademicYear  $academicYear
-     * @return \Illuminate\Http\Response
-     */
-    public function show(AcademicYear $academicYear)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\AcademicYear  $academicYear
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(AcademicYear $academicYear)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateAcademicYearRequest  $request
-     * @param  \App\Models\AcademicYear  $academicYear
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateAcademicYearRequest $request, AcademicYear $academicYear)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\AcademicYear  $academicYear
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(AcademicYear $academicYear)
-    {
-        //
-    }
 }

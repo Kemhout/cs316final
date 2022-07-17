@@ -28,9 +28,8 @@ class HomeController extends Controller
     public function index(Request $request)
     {
       // $userrole = Auth::user()->getRoleName();
-        //dump($userrole);
+        
         $user = $request->user();
-        dump($user->getRoleNames()[0]);
         $major = DB::table('users')->distinct()->get(['major']);
         $majorCount = User::pluck('major')->count()-1;
         $arrMajorCount = array();

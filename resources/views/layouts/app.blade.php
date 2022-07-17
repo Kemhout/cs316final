@@ -14,11 +14,18 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     
-
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"/> 
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"/>
+    
+    {{-- search dropdown --}}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
     @livewireStyles
+
     <style type="text/css">
         .dropdown-toggle{
             height: 40px;
@@ -30,10 +37,11 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
-                @guest
                 <a class="navbar-brand" href="{{  route('home') }}">
                     ABC School System
                 </a>
+                @guest
+
                 @else
                     <a class="navbar-brand" href="{{ route('home') }}">
                         {{ Auth::user()->name }}
@@ -59,6 +67,8 @@
                         <li><a class="nav-link" href="{{ route('majors.index') }}">Academic</a></li>
                             <li><a class="nav-link" href="{{ route('users.index') }}">Manage Student</a></li>
                             <li><a class="nav-link" href="{{ route('courses.index') }}">Course</a></li>
+                            <li><a class="nav-link" href="{{ route('study_plans.list_study_plan_index') }}">Study Plan</a></li>
+                            <li><a class="nav-link" href="{{ route('assign.index') }}">Assign To Student</a></li>
                         @else
                             <li><a class="nav-link" href="{{ route('export') }}">Export</a></li>
                             <li><a class="nav-link" href="{{ route('roles.index') }}">Check Course Audit</a></li>
@@ -82,4 +92,6 @@
         </main>
     </div>
 </body>
+
 </html>
+

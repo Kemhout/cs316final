@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Major;
+use App\Models\Semester;
+use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,8 +17,10 @@ class MajorController extends Controller
      */
     public function index(Request $request)
     {
+        $semesters = Semester::orderBy('id','DESC')->paginate(10);
         $major = Major::orderBy('full_name','DESC')->paginate(10);
-        return view('academic.index',compact('major'))
+        $ac = AcademicYear::orderBy('id','DESC')->paginate(10);
+        return view('academic.index',compact('major', 'semesters', 'ac'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
     
@@ -26,7 +30,7 @@ class MajorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         return view('academic.major_create',);
     }
@@ -40,13 +44,13 @@ class MajorController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'short_name' => 'required',
-            'full_name' => 'required',
+            //'full_name' => 'required',
+            //'short_name' => 'required',
         ]);
     
         Major::create($request->all());
         return redirect()->route('majors.index')
-                        ->with('success','Course created successfully.');
+                        ->with('success','Major created successfully.');
     }
 
     /**
@@ -104,6 +108,6 @@ class MajorController extends Controller
     {
         Major::find($id)->delete();
         return redirect()->route('majors.index')
-                        ->with('success','Course deleted successfully');
+                        ->with('success','Major deleted successfully');
     }
 }

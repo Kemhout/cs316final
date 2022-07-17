@@ -15,6 +15,7 @@ class StudentGroupDataSeeder extends Seeder
     public function run()
     {
         $studentGroups = [
+            'All',
             'BUS Freshman',
             'BUS Sophomore',
             'BUS Junior',
@@ -27,7 +28,23 @@ class StudentGroupDataSeeder extends Seeder
             'MIS Sophomore',
             'MIS Junior',
             'MIS Senior',
-            'All',
+            'CE Freshman',
+            'CE Sophomore',
+            'CE Junior',
+            'CE Senior',
+            'ITL Freshman',
+            'ITL Sophomore',
+            'ITL Junior',
+            'ITL Senior',
+            'BAF Freshman',
+            'BAF Sophomore',
+            'BAF Junior',
+            'BAF Senior',
+            'ARC Freshman',
+            'ARC Sophomore',
+            'ARC Junior',
+            'ARC Senior',
+            
          ];
     
         foreach ($studentGroups as $studentGroup) {

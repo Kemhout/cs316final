@@ -52,7 +52,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <input name="require" type="hidden" value={{4}}>
+                <input name="grade" type="hidden" value={{4}}>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
@@ -67,13 +67,4 @@
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-
-{{-- <!-- Initialize the plugin: -->
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('select').selectpicker();
-    });
-</script> --}}
-  
-
 @endsection

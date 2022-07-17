@@ -47,7 +47,7 @@ class LoginController extends Controller
         Session::flush();
         $count = DB::table('courses')->count();
         for($i=0; $i<$count; $i++) {
-            Course::where('id', $i)->update(['require' => 4]);
+            Course::where('id', $i)->update(['grade' => 4]);
             Course::where('id', $i)->update(['studyOrNot' => NULL]);
         }
         Auth::logout();

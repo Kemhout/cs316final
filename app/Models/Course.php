@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Course extends Model
 {
     use HasFactory;
+    use SearchableTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -18,8 +20,15 @@ class Course extends Model
         'name', 'code_name', 'type_of_course', 'credit', 'grade', 'studyOrNot'
     ];
 
-    public function student_group()
+    protected $searchable = [
+        'columns' => [
+            'courses.name' => 10,
+            'courses.code_name' => 5,
+        ]
+    ];
+
+    public function majors()
     {
-        return $this->belongsToMany(User::class, 'student_course');
+        return $this->belongsToMany(User::class, 'study_plans');
     }
 }

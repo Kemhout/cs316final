@@ -29,7 +29,7 @@
 {!! Form::model($courses, ['method' => 'PATCH','route' => ['courses.update', $courses->id]]) !!}
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="js-example-basic-single">
+        <div class="form-group">
             <strong>Name:</strong>
             {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
         </div>
@@ -37,8 +37,7 @@
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Code name</strong>
-                {!! Form::text('code_name', null, array('placeholder' => 'Code Name','class' => 'form-control')) !!}
-           
+            {!! Form::text('code_name', null, array('placeholder' => 'Code Name','class' => 'form-control')) !!}
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
@@ -71,3 +70,4 @@
 </div>
 {!! Form::close() !!}
 @endsection
+

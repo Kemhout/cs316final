@@ -13,4 +13,9 @@ class Major extends Model
         'full_name',
         'short_name',
     ];
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'study_plans');
+    }
 }

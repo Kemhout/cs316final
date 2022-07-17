@@ -56,8 +56,18 @@
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
+            <strong>Year Level:</strong>
+                <select name="year_level" class="form-control custom-select">
+                @foreach($year_level as $item)
+                    <option value="{{ $item }}" selected >{{ $item }}</option>
+                @endforeach
+                </select>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
           <strong>Academic Year:</strong>
-            <select name="ac" class="form-control custom-select">
+            <select name="academic_year" class="form-control custom-select">
                 @foreach($academic_year as $item)
                     <option value="{{ $item }}" selected >{{ $item }}</option>
                 @endforeach

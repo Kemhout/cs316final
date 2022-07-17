@@ -37,8 +37,14 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
-                                    <strong>Name:</strong>
-                                    {{ $user->name }}
+                                    <strong>First Name:</strong>
+                                    {{ $user->first_name }}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    <strong>Last Name:</strong>
+                                    {{ $user->last_name }}
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">
@@ -55,8 +61,14 @@
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
+                                    <strong>Year Level:</strong>
+                                    {{ $user->year_level }}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
                                     <strong>Academic Year:</strong>
-                                    {{ $user->ac }}
+                                    {{ $user->academic_year }}
                                 </div>
                             </div>
                         </div>                  

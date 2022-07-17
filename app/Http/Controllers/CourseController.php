@@ -19,8 +19,9 @@ class CourseController extends Controller
      */
     public function index()
     {
+        $major = DB::table('majors')->pluck('short_name');
         $courses = Course::latest()->paginate(5);
-        return view('courses.index',compact('courses'))
+        return view('courses.index',compact('courses', 'major'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
     
@@ -33,7 +34,7 @@ class CourseController extends Controller
     {
         $credit = array(3, 4);
         $typeOfCourse = array("F-KHStudies", "F-MathSciTech", "F-SocSci", "F-Eng", "F-Core", "GE");
-        return view('courses.create', compact('typeOfCourse', 'credit',));
+        return view('courses.create', compact('typeOfCourse', 'credit', ));
     }
     
     /**
@@ -120,5 +121,17 @@ class CourseController extends Controller
         Course::find($id)->delete();
         return redirect()->route('courses.index')
                         ->with('success','Course deleted successfully');
+    }
+
+    public function mySearch(Request $request)
+    {
+        $i = 0;
+    	if($request->has('search')){
+    		$courses = Course::search($request->get('search'))->paginate(5);	
+    	}else{
+    		$courses = Course::latest()->paginate(5);
+    	}
+        return view('courses.index',compact('courses'))
+        ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 }

@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Semester;
-use App\Http\Requests\StoreSemesterRequest;
-use App\Http\Requests\UpdateSemesterRequest;
+use App\Models\Major;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class SemesterController extends Controller
 {
@@ -13,74 +14,38 @@ class SemesterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $semesters = Semester::orderBy('id','DESC')->paginate(10);
+        return view('academic.index',compact('semesters'))
+            ->with('i', ($request->input('page', 1) - 1) * 5);
+    }
+    
+
+    public function create(Request $request)
+    {
+       
+        $input = $request->all();
+        $input['id'] = DB::table('semesters')->count()+1;       
+        Semester::create($input);
+       return redirect()->route('majors.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        request()->validate([
+            'id' => 'required',
+        ]);
+        
+        Semester::create($request->all());
+        return redirect()->route('semesters.index')->with('success','Semester created successfully.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreSemesterRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreSemesterRequest $request)
+    public function destroy()
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Semester  $semester
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Semester $semester)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Semester  $semester
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Semester $semester)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateSemesterRequest  $request
-     * @param  \App\Models\Semester  $semester
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateSemesterRequest $request, Semester $semester)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Semester  $semester
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Semester $semester)
-    {
-        //
+        $deleteID = DB::table('semesters')->count();
+        Semester::find($deleteID)->delete();
+        return redirect()->route('majors.index')
+                        ->with('success','Semester deleted successfully');
     }
 }

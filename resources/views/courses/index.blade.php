@@ -10,7 +10,18 @@
             <div class="pull-right">
                 <a class="btn btn-success" href="{{ route('courses.create') }}"> Create New Course</a>
             </div>
+            <form method="GET" action="{{ url('my-search') }}">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" name="search" class="form-control" placeholder="Search" value="{{ old('search') }}">
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-info">Search</button>
+                    </div>
+                </div>
+            </form>
         </div>
+
     </div>
 
 
@@ -20,6 +31,7 @@
         </div>
     @endif
 
+    {{-- Search --}}
 
     <table class="table table-bordered">
         <tr>
@@ -30,7 +42,9 @@
             <th>Credit</th>
             <th width="280px">Action</th>
         </tr>
-	    @foreach ($courses as $course)
+	
+            @foreach ($courses as $course)
+
 	    <tr>
 	        <td>{{ ++$i }}</td>
 	        <td>{{ $course->name }}</td>
@@ -48,7 +62,17 @@
 	        </td>
 	    </tr>
 	    @endforeach
+        
+        
     </table>
+
+    {{-- live wire --}}
+    {{-- @foreach ($major as $item)
+        <div>
+            <input wire:model="transmissions.{{ $item }}" type="checkbox" value="{{ $item }}" />
+            <label>{{ $item }}</label>
+        </div>
+    @endforeach --}}
 
     {!! $courses->links('pagination::bootstrap-4') !!}
 
