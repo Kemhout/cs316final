@@ -18,7 +18,7 @@ use PhpParser\Node\Expr\Assign;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Web Route
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
